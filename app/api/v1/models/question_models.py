@@ -12,7 +12,7 @@ class QuestionModels:
     def add_question(self, user_id, title, body, tags, answer):
         """Create new question"""
         question_data = {
-            'question_id' : len(questions) + 1,
+            'questionId' : len(questions) + 1,
             'user_id' : user_id,
             'time': datetime.datetime.now().strftime("%A, %d. %B %Y %I:%M%p"),
             'title' : title,
@@ -22,3 +22,7 @@ class QuestionModels:
         }
         question_details = self.db.append(question_data)
         return question_details
+
+    def get_all_questions(self):
+        """Return all questions"""
+        return self.db
