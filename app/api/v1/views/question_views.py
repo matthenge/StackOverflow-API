@@ -19,3 +19,11 @@ def ask_question():
     return make_response(jsonify({
             "message": "Question Posted Successfully"
         }), 201)
+
+@questionv1.route('/questions', methods=['GET'])
+def retrieve_questions():
+    """Return all questions"""
+    all_questions = questions.get_all_questions()
+    return make_response(jsonify({
+            "All orders": all_questions
+        }), 200)
