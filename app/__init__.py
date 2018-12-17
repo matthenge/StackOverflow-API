@@ -1,5 +1,5 @@
 from flask import Flask, Blueprint
-from .api.v1.views.user_views import version1 as v1
+from .api.v1.views.user_views import userv1 as v1
 
 def create_app():
     app = Flask(__name__)
