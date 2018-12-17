@@ -1,3 +1,4 @@
 .vscode
 xenv/
 *__pycache__
+.env
