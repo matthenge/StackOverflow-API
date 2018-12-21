@@ -28,17 +28,16 @@ def login():
     username = data['username']
     password = data['password']
 
-    one_user = users.find_by_username(username)
-    pswrd = users.check_password(password)
-    if not one_user:
+    one_user = users.login_by_username(username, password)
+    if one_user is False:
         return make_response(jsonify({
             "Error": "User not found: Please register"
         }), 401)
-    elif not pswrd:
+    elif one_user == "Password Error":
         return make_response(jsonify({
-            "Error": "Password incorrect"
+            "Error": "Password Incorrect"
         }), 401)
-    elif one_user and pswrd:
+    elif one_user:
         return make_response(jsonify({
-            "User": one_user
+            "Message": "Logged in Successfully"
         }), 201)
