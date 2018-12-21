@@ -1,5 +1,5 @@
 """User models"""
-from app.api.v1.utils.manage import find_username, find_password
+from app.api.v1.utils.manage import find_username
 users = []
 
 
@@ -21,10 +21,12 @@ class UserModels:
         user_details = users.append(user_data)
         return user_details
 
-    def find_by_username(self, username):
-        """Find a user by username"""
-        return find_username(users, username)
-
-    def check_password(self, password):
-        """Check if password matches"""
-        return find_password(users, password)
+    def login_by_username(self, username, password):
+        """Login a user by username"""
+        user = find_username(users, username)
+        if user and password == user['password']:
+            return user
+        elif user and password != user['password']:
+            return "Password Error"
+        elif not user:
+            return False
