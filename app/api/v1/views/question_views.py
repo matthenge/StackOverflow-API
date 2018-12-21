@@ -2,7 +2,7 @@
 from flask import make_response, jsonify, request, Blueprint
 from app.api.v1.models.question_models import QuestionModels
 
-questionv1 = Blueprint('v1', __name__, url_prefix='/api/v1')
+questionv1 = Blueprint('questionv1', __name__, url_prefix='/api/v1')
 questions = QuestionModels()
 
 
