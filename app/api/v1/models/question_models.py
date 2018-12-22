@@ -32,3 +32,11 @@ class QuestionModels:
     def get_one_question(self, questionId):
         """Return specific question"""
         return fetch_one(questions, questionId)
+
+    def delete_one_question(self, questionId):
+        """Delete a specific question"""
+        question = fetch_one(questions, questionId)
+        if question:
+            return questions.remove(question)
+        elif not question:
+            return False

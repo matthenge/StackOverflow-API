@@ -35,6 +35,25 @@ def retrieve_questions():
 def retrieve_one_question(questionId):
     """Return one question"""
     one_question = questions.get_one_question(questionId)
-    return make_response(jsonify({
-            "Question": one_question
-        }), 200)
+    if one_question:
+        return make_response(jsonify({
+                "Question": one_question
+            }), 200)
+    elif not one_question:
+        return make_response(jsonify({
+                "Error": "Question does not exist or deleted"
+            }), 400)
+
+
+@questionv1.route('/questions/<questionId>', methods=['DELETE'])
+def delete_question(questionId):
+    """Delete a question"""
+    delete_question = questions.delete_one_question(questionId)
+    if delete_question is False:
+        return make_response(jsonify({
+                "Error": "Question does not exist or already deleted"
+            }), 400)
+    else:
+        return make_response(jsonify({
+                "Message": "Question Deleted"
+            }), 200)
