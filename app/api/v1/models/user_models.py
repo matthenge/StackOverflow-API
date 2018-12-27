@@ -1,5 +1,6 @@
 """User models"""
-from app.api.v1.utils.manage import find_username
+from app.api.v1.utils.manage import find_username, hash_password
+from app.api.v1.utils.manage import check_hash_password
 users = []
 
 
@@ -18,15 +19,17 @@ class UserModels:
             'password': password,
             'confirm_password': confirm_password
         }
+        user_data['password'] = hash_password(password, username)
         user_details = users.append(user_data)
         return user_details
 
     def login_by_username(self, username, password):
         """Login a user by username"""
+        hashed = hash_password(password, username)
         user = find_username(users, username)
-        if user and password == user['password']:
+        if user and check_hash_password(hashed, user['password']) is True:
             return user
-        elif user and password != user['password']:
+        elif user and check_hash_password(hashed, user['password']) is False:
             return "Password Error"
         elif not user:
             return False
