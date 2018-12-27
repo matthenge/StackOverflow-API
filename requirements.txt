@@ -16,6 +16,7 @@ more-itertools==4.3.0
 pep8==1.7.1
 pluggy==0.8.0
 py==1.7.0
+py-bcrypt==0.4
 pycparser==2.19
 pylint==2.2.2
 pytest==4.0.2

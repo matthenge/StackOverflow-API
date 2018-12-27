@@ -39,5 +39,5 @@ def login():
         }), 401)
     elif one_user:
         return make_response(jsonify({
-            "Message": "Logged in Successfully"
+            "Message": one_user
         }), 201)
