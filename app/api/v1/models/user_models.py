@@ -1,6 +1,8 @@
 """User models"""
 from app.api.v1.utils.manage import find_username, hash_password
-from app.api.v1.utils.manage import check_hash_password
+from app.api.v1.utils.manage import check_hash_password, find_email
+from app.api.v1.utils.validation import email_validation, details_validation
+from app.api.v1.utils.validation import verify_user
 users = []
 
 
@@ -19,7 +21,23 @@ class UserModels:
             'password': password,
             'confirm_password': confirm_password
         }
+        data = details_validation(username, email, password, confirm_password)
+        if data is None:
+            return "empty"
+        valid_email = email_validation(email)
+        if valid_email is False:
+            return "invalid"
+        verify = verify_user(users, username, email)
+        if verify == "username":
+            return "username exists"
+        elif verify == "email":
+            return "email exists"
         user_data['password'] = hash_password(password, username)
+        hashed = hash_password(confirm_password, username)
+        if check_hash_password(hashed, user_data['password']) is False:
+            return "unmatched"
+        user_data['confirm_password'] = hash_password(confirm_password,
+                                                      username)
         user_details = users.append(user_data)
         return user_details
 
@@ -33,3 +51,6 @@ class UserModels:
             return "Password Error"
         elif not user:
             return False
+
+    def all_users(self):
+        return users
