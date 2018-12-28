@@ -1,6 +1,7 @@
 """Question models"""
 import datetime
 from app.api.v1.utils.manage import fetch_one
+from app.api.v1.utils.validation import question_validation
 
 questions = []
 
@@ -22,6 +23,9 @@ class QuestionModels:
             'tags': tags,
             'answer': answer
         }
+        fields = question_validation(user_id, title, body, tags, answer)
+        if fields is None:
+            return "empty"
         question_details = questions.append(question_data)
         return question_details
 

@@ -9,12 +9,21 @@ answers = AnswerModels()
 @answerv1.route('/questions/answers', methods=['POST'])
 def post_answer():
     """Post an answer"""
-    data = request.get_json()
-    questionId = data['questionId']
-    question = data['question']
-    answer = data['answer']
+    try:
+        data = request.get_json()
+        questionId = data['questionId']
+        question = data['question']
+        answer = data['answer']
+    except KeyError:
+        return make_response(jsonify({
+            "Error": "Please make sure all the fields are present"
+        }), 401)
 
-    answers.post_answer(questionId, question, answer)
+    ans_data = answers.post_answer(questionId, question, answer)
+    if ans_data == "empty":
+        return make_response(jsonify({
+                "Error": "All fields are required"
+            }), 401)
     return make_response(jsonify({
             "message": "Answer Posted Successfully"
         }), 201)

@@ -1,5 +1,6 @@
 """Answers Model"""
 import datetime
+from app.api.v1.utils.validation import answer_validation
 
 
 answers = []
@@ -20,4 +21,7 @@ class AnswerModels:
             'question': question,
             'answer': answer
         }
+        field = answer_validation(questionId, question, answer)
+        if field is None:
+            return "empty"
         return answers.append(answer_data)

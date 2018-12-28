@@ -16,6 +16,13 @@ def find_username(users, username):
             return user
 
 
+def find_email(users, email):
+    """Find the email in the database"""
+    for user in users:
+        if email == user['email']:
+            return user
+
+
 def hash_password(password, username):
     """Hash user passwords"""
     salt = password + username
