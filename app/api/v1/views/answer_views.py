@@ -1,13 +1,15 @@
 """Answer views"""
 from flask import make_response, jsonify, request, Blueprint
 from app.api.v1.models.answer_models import AnswerModels
+from app.api.v1.utils.authentication import login_required
 
 answerv1 = Blueprint('v1', __name__, url_prefix='/api/v1')
 answers = AnswerModels()
 
 
 @answerv1.route('/questions/answers', methods=['POST'])
-def post_answer():
+@login_required
+def post_answer(username):
     """Post an answer"""
     try:
         data = request.get_json()
