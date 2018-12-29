@@ -2,13 +2,15 @@
 from flask import make_response, jsonify, request, Blueprint
 from app.api.v1.models.question_models import QuestionModels
 from app.api.v1.utils.validation import verify_id
+from app.api.v1.utils.authentication import login_required
 
 questionv1 = Blueprint('questionv1', __name__, url_prefix='/api/v1')
 questions = QuestionModels()
 
 
 @questionv1.route('/questions', methods=['POST'])
-def ask_question():
+@login_required
+def ask_question(username):
     """Create question"""
     try:
         data = request.get_json()
@@ -32,7 +34,8 @@ def ask_question():
 
 
 @questionv1.route('/questions', methods=['GET'])
-def retrieve_questions():
+@login_required
+def retrieve_questions(username):
     """Return all questions"""
     all_questions = questions.get_all_questions()
     return make_response(jsonify({
@@ -41,7 +44,8 @@ def retrieve_questions():
 
 
 @questionv1.route('/questions/<questionId>', methods=['GET'])
-def retrieve_one_question(questionId):
+@login_required
+def retrieve_one_question(questionId, username):
     """Return one question"""
     verify = verify_id(questionId)
     if verify is False:
@@ -60,7 +64,8 @@ def retrieve_one_question(questionId):
 
 
 @questionv1.route('/questions/<questionId>', methods=['DELETE'])
-def delete_question(questionId):
+@login_required
+def delete_question(questionId, username):
     """Delete a question"""
     verify = verify_id(questionId)
     if verify is False:
