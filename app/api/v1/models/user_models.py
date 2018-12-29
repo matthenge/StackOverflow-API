@@ -3,6 +3,7 @@ from app.api.v1.utils.manage import find_username, hash_password
 from app.api.v1.utils.manage import check_hash_password, find_email
 from app.api.v1.utils.validation import email_validation, details_validation
 from app.api.v1.utils.validation import verify_user
+
 users = []
 
 
