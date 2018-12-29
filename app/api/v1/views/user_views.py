@@ -1,6 +1,9 @@
 """User views"""
-from flask import make_response, jsonify, request, Blueprint
+from flask import make_response, jsonify, request, Blueprint, current_app
 from app.api.v1.models.user_models import UserModels
+from app.api.v1.utils.authentication import login_required
+import jwt
+import datetime
 
 userv1 = Blueprint('userv1', __name__, url_prefix='/api/v1')
 users = UserModels()
@@ -67,13 +70,22 @@ def login():
             "Error": "Password Incorrect"
         }), 401)
     elif one_user:
-        return make_response(jsonify({
-            "Message": "Logged in Successfully"
-        }), 201)
+        try:
+            expiry = datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+            details = {'username': username, 'exp': expiry}
+            token = jwt.encode(details, current_app.config['SECRET_KEY'],
+                               algorithm='HS256')
+            return make_response(jsonify({
+                "Token": token.decode('UTF-8'),
+                "Message": "Logged in as {}".format(username)
+                }), 200)
+        except Exception as error:
+            return str(error)
 
 
 @userv1.route('/auth/users', methods=['GET'])
-def user_accounts():
+@login_required
+def user_accounts(username):
     accounts = users.all_users()
     return make_response(jsonify({
             "Message": accounts
