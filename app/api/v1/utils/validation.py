@@ -64,3 +64,24 @@ def verify_id(questionId):
         int(questionId)
     except ValueError:
         return False
+
+
+def password_strength(password):
+    """
+    Check password strength
+    Should contain: Atleats 8 characters i n length,
+                    Atleast 1 uppercase letter,
+                    Atleast 1 lowercase letter,
+                    Atleast 1 digit,
+                    Atleast one special character
+    """
+    if len(password) < 8:
+        return "too short"
+    elif re.search(r"[A-Z]", password) is None:
+        return "no uppercase"
+    elif re.search(r"[a-z]", password) is None:
+        return "no lowercase"
+    elif re.search(r"\d", password) is None:
+        return "no digit"
+    elif re.search(r"\W", password) is None:
+        return "no symbol"

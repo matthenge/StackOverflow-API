@@ -2,7 +2,7 @@
 from app.api.v1.utils.manage import find_username, hash_password
 from app.api.v1.utils.manage import check_hash_password, find_email
 from app.api.v1.utils.validation import email_validation, details_validation
-from app.api.v1.utils.validation import verify_user
+from app.api.v1.utils.validation import verify_user, password_strength
 
 users = []
 
@@ -33,6 +33,17 @@ class UserModels:
             return "username exists"
         elif verify == "email":
             return "email exists"
+        strong_pass = password_strength(password)
+        if strong_pass == "too short":
+            return "short"
+        elif strong_pass == "no uppercase":
+            return "uppercase"
+        elif strong_pass == "no lowercase":
+            return "lowercase"
+        elif strong_pass == "no digit":
+            return "digit"
+        elif strong_pass == "no symbol":
+            return "symbol"
         user_data['password'] = hash_password(password, username)
         hashed = hash_password(confirm_password, username)
         if check_hash_password(hashed, user_data['password']) is False:
