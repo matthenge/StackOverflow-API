@@ -24,13 +24,13 @@ def signup():
         }), 401)
 
     user = users.add_user(username, email, password, confirm_password)
-    if user == "invalid":
-        return make_response(jsonify({
-                "Error": "Please enter a correct email address"
-            }), 401)
     if user == "empty":
         return make_response(jsonify({
                 "Error": "All fields are required"
+            }), 401)
+    if user == "invalid":
+        return make_response(jsonify({
+                "Error": "Please enter a correct email address"
             }), 401)
     if user == "username exists":
         return make_response(jsonify({
@@ -39,6 +39,26 @@ def signup():
     if user == "email exists":
         return make_response(jsonify({
                 "Error": "The email already exists. Please login"
+            }), 401)
+    if user == "short":
+        return make_response(jsonify({
+                "Error": "Password must be atleast 8 characters long"
+            }), 401)
+    if user == "uppercase":
+        return make_response(jsonify({
+                "Error": "Password must have atleast one uppercase letter"
+            }), 401)
+    if user == "lowercase":
+        return make_response(jsonify({
+                "Error": "Password must have atleast one lowercase letter"
+            }), 401)
+    if user == "digit":
+        return make_response(jsonify({
+                "Error": "Password must have atleast one digit"
+            }), 401)
+    if user == "symbol":
+        return make_response(jsonify({
+                "Error": "Password must have atleast one special character"
             }), 401)
     if user == "unmatched":
         return make_response(jsonify({
