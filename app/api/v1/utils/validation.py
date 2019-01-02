@@ -24,8 +24,8 @@ def details_validation(username, email, password, confirm_password):
         return True
 
 
-def question_validation(user_id, title, body, tags, answer):
-    if not user_id:
+def question_validation(username, title, body, tags, answer):
+    if not username:
         return None
     elif not title:
         return None
