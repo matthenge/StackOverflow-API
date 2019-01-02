@@ -9,6 +9,15 @@ def fetch_one(questions, questionId):
                 return question
 
 
+def get_all_by(db, username):
+    """Fetch all by one user"""
+    user_items = []
+    for item in db:
+        if item['username'] == username:
+            user_items.append(item)
+    return user_items
+
+
 def find_username(users, username):
     """Find the username in the database"""
     for user in users:

@@ -10,11 +10,11 @@ questions = QuestionModels()
 
 @questionv1.route('/questions', methods=['POST'])
 @login_required
-def ask_question(username):
+def ask_question(current_user):
     """Create question"""
     try:
         data = request.get_json()
-        user_id = data['user_id']
+        username = data['username']
         title = data['title']
         body = data['body']
         tags = data['tags']
@@ -23,7 +23,7 @@ def ask_question(username):
         return make_response(jsonify({
             "Error": "Please make sure all the fields are present"
         }), 401)
-    qdata = questions.add_question(user_id, title, body, tags, answer)
+    qdata = questions.add_question(username, title, body, tags, answer)
     if qdata == "empty":
         return make_response(jsonify({
                 "Error": "All fields are required"
@@ -35,7 +35,7 @@ def ask_question(username):
 
 @questionv1.route('/questions', methods=['GET'])
 @login_required
-def retrieve_questions(username):
+def retrieve_questions(current_user):
     """Return all questions"""
     all_questions = questions.get_all_questions()
     return make_response(jsonify({
@@ -45,7 +45,7 @@ def retrieve_questions(username):
 
 @questionv1.route('/questions/<questionId>', methods=['GET'])
 @login_required
-def retrieve_one_question(questionId, username):
+def retrieve_one_question(questionId, current_user):
     """Return one question"""
     verify = verify_id(questionId)
     if verify is False:
@@ -63,9 +63,23 @@ def retrieve_one_question(questionId, username):
             }), 400)
 
 
+@questionv1.route('/questions/user/<username>', methods=['GET'])
+@login_required
+def user_questions(username, current_user):
+    """Return one question"""
+    user_qs = questions.get_user_questions(username)
+    if user_qs == "empty":
+            return make_response(jsonify({
+                "Error": "No questions posted by user"
+            }), 400)
+    return make_response(jsonify({
+                "Questions": user_qs
+            }), 200)
+
+
 @questionv1.route('/questions/<questionId>', methods=['DELETE'])
 @login_required
-def delete_question(questionId, username):
+def delete_question(questionId, current_user):
     """Delete a question"""
     verify = verify_id(questionId)
     if verify is False:
