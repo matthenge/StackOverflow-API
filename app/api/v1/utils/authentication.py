@@ -17,7 +17,7 @@ def login_required(f):
                 return 'expired token'
             except jwt.InvalidTokenError:
                 return 'invalid token'
-            return f(*args, **kwargs, username=data['username'])
+            return f(*args, **kwargs, current_user=data['username'])
         else:
             return 'missing token'
     return authenticate
