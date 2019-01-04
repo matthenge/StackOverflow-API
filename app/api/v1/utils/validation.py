@@ -39,8 +39,10 @@ def question_validation(username, title, body, tags, answer):
         return True
 
 
-def answer_validation(questionId, question, answer):
-    if not questionId:
+def answer_validation(username, questionId, question, answer):
+    if not username:
+        return None
+    elif not questionId:
         return None
     elif not question:
         return None
